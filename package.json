@@ -1,0 +1,28 @@
+{
+  "name": "broom-broom-refactoring-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx babel src --out-dir dist",
+    "dev": "npx nodemon",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/broom-broom-team/broom-broom-refactoring-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/broom-broom-team/broom-broom-refactoring-server/issues"
+  },
+  "homepage": "https://github.com/broom-broom-team/broom-broom-refactoring-server#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/preset-env": "^7.15.0",
+    "nodemon": "^2.0.12"
+  }
+}
