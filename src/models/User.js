@@ -1,4 +1,6 @@
 import Sequelize from "sequelize";
+import bcrypt from "bcrypt";
+
 export default class User extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
@@ -49,6 +51,12 @@ export default class User extends Sequelize.Model {
         paranoid: true,
         charset: "utf8mb4",
         collate: "utf8mb4_general_ci",
+        hooks: {
+          beforeCreate: (user) => {
+            const salt = bcrypt.genSaltSync();
+            user.password = bcrypt.hashSync(user.password, salt);
+          },
+        },
       }
     );
   }
