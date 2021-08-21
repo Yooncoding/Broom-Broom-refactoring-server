@@ -1,14 +1,34 @@
 import express from "express";
 import routes from "../api/routes";
 import config from "../config";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import morgan from "morgan";
 
 export default (app) => {
+  // session option
+  const sessionMiddleware = session({
+    resave: false,
+    saveUninitialized: false,
+    secret: config.secret,
+    cookie: { httpOnly: true, secure: false },
+  });
+
   // middleware
+  app.use(morgan("dev"));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser(config.secret));
+  app.use(sessionMiddleware);
 
   // router
   app.use(config.api.prefix, routes());
+  app.use("/favicon.ico", (req, res) => res.status(204));
+  app.use((req, res, next) => {
+    const error = new Error("Not Found");
+    error.status = 404;
+    next(error);
+  });
 
   // error handler
   app.use((err, req, res, next) => {
