@@ -21,9 +21,38 @@ export function init() {
   District.init(sequelize);
   Cog.init(sequelize);
 
-  // asscociate
-  User.hasMany(Post, { foreignKey: "sellerId", targetKey: "id" });
+  // associate
+  User.hasMany(Post, { foreignKey: "sellerId", sourceKey: "id" });
+  User.hasMany(Post, { foreignKey: "buyerId", sourceKey: "id" });
+  User.hasMany(UserAddress, { foreignKey: "userId", sourceKey: "id" });
+  User.hasMany(ChatRoom, { foreignKey: "setterId", sourceKey: "id" });
+  User.hasMany(ChatRoom, { foreignKey: "getterId", sourceKey: "id" });
+  User.hasMany(ChatMessage, { foreignKey: "senderId", sourceKey: "id" });
+  User.hasMany(Cog, { foreignKey: "userId", sourceKey: "id" });
+
+  Post.hasMany(ChatRoom, { foreignKey: "postId", sourceKey: "id" });
+  Post.hasMany(PostImage, { foreignKey: "postId", sourceKey: "id" });
   Post.belongsTo(User, { foreignKey: "sellerId", targetKey: "id" });
+  Post.belongsTo(User, { foreignKey: "buyerId", targetKey: "id" });
+  Post.belongsTo(District, { foreignKey: "districtId", targetKey: "id" });
+
+  UserAddress.belongsTo(User, { foreignKey: "userId", targetKey: "id" });
+  UserAddress.belongsTo(District, { foreignKey: "districtId", targetKey: "id" });
+
+  PostImage.belongsTo(Post, { foreignKey: "postId", targetKey: "id" });
+
+  ChatRoom.hasMany(ChatMessage, { foreignKey: "roomId", sourceKey: "id" });
+  ChatRoom.belongsTo(User, { foreignKey: "setterId", targetKey: "id" });
+  ChatRoom.belongsTo(User, { foreignKey: "getterId", targetKey: "id" });
+  ChatRoom.belongsTo(Post, { foreignKey: "postId", targetKey: "id" });
+
+  ChatMessage.belongsTo(User, { foreignKey: "senderId", targetKey: "id" });
+  ChatMessage.belongsTo(ChatRoom, { foreignKey: "roomId", targetKey: "id" });
+
+  District.hasMany(Post, { foreignKey: "districtId", sourceKey: "id" });
+  District.hasMany(UserAddress, { foreignKey: "districtId", sourceKey: "id" });
+
+  Cog.belongsTo(User, { foreignKey: "userId", targetKey: "id" });
 
   return sequelize;
 }

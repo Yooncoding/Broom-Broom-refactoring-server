@@ -9,6 +9,11 @@ export default class District extends Sequelize.Model {
           allowNull: false,
           primaryKey: true,
         },
+        ADMCD: {
+          // 행정구역코드
+          type: Sequelize.BIGINT,
+          allowNull: true,
+        },
         ADMNM: {
           // 행정구역명
           type: Sequelize.STRING(30),
