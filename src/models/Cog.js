@@ -1,40 +1,36 @@
 import Sequelize from "sequelize";
 
-export default class Post extends Sequelize.Model {
+export default class Cog extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        title: {
-          type: Sequelize.STRING(20),
+        type: {
+          type: Sequelize.STRING(10),
           allowNull: false,
         },
-        content: {
-          type: Sequelize.TEXT,
+        bankAccount: {
+          type: Sequelize.STRING(20),
+          allowNull: true,
+        },
+        bankName: {
+          type: Sequelize.STRING(10),
+          allowNull: true,
+        },
+        amount: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         status: {
           type: Sequelize.STRING(10),
           allowNull: false,
-          defaultValue: "basic", // start, end, stop, close
-        },
-        price: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        deadline: {
-          type: Sequelize.DATE,
-          allowNull: false,
-        },
-        review: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
+          defaultValue: "basic", // hold
         },
       },
       {
         sequelize,
         timestamps: true,
         underscored: false,
-        modelName: "Post",
+        modelName: "Cog",
         freezeTableName: true,
         paranoid: true,
         charset: "utf8mb4",
