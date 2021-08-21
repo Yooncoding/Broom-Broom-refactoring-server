@@ -4,6 +4,7 @@ import config from "../config";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import morgan from "morgan";
+import logger from "../utils/logger";
 
 export default (app) => {
   // session option
@@ -32,7 +33,8 @@ export default (app) => {
 
   // error handler
   app.use((err, req, res, next) => {
+    logger.error(err);
     res.status(err.status || 500).json({ success: false, message: err.message });
   });
-  console.log("    ✌️ EXPRESS LOADED");
+  logger.info("✌️ EXPRESS LOADED");
 };
