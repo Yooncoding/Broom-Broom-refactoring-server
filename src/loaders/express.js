@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import morgan from "morgan";
 import logger from "../utils/logger";
+import CustomError from "../utils/errorhandle";
 
 export default (app) => {
   // session option
@@ -26,8 +27,7 @@ export default (app) => {
   app.use(config.api.prefix, routes());
   app.use("/favicon.ico", (req, res) => res.status(204));
   app.use((req, res, next) => {
-    const error = new Error("Not Found");
-    error.status = 404;
+    const error = new CustomError("NOT_FOUND", 404, "페이지를 찾을 수 없습니다.");
     next(error);
   });
 
