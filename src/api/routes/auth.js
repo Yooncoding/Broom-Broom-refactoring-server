@@ -7,7 +7,7 @@ const router = Router();
 function authRouter(root) {
   root.use("/auth", router);
 
-  router.post("/signup", AuthValidator.signup, AuthController.signUp);
+  router.post("/signup", AuthValidator.signUp, AuthController.signUp);
 }
 
 export default authRouter;

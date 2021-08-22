@@ -19,6 +19,7 @@ export default {
     host: process.env.DB_HOST,
     timezone: "+09:00",
     dialect: "mysql",
+    logging: false,
   },
 
   // cookie

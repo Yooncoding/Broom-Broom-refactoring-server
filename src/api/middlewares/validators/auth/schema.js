@@ -1,7 +1,7 @@
 import joi from "joi";
 
 const schema = {
-  singup: joi.object({
+  signUp: joi.object({
     email: joi.string().email().min(6).required(),
     nickname: joi
       .string()
