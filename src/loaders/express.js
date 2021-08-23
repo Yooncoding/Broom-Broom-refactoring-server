@@ -6,9 +6,12 @@ import session from "express-session";
 import morgan from "morgan";
 import logger from "../utils/logger";
 import CustomError from "../utils/errorhandle";
+import passport from "passport";
+import passportConfig from "../utils/passport";
 
 export default (app) => {
   // session option
+  passportConfig();
   const sessionMiddleware = session({
     resave: false,
     saveUninitialized: false,
@@ -22,6 +25,8 @@ export default (app) => {
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser(config.secret));
   app.use(sessionMiddleware);
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // router
   app.use(config.api.prefix, routes());
