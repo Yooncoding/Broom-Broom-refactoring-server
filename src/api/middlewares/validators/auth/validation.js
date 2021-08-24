@@ -10,6 +10,7 @@ const AuthValidators = {
     }
     next();
   },
+
   postEmail: (req, res, next) => {
     const value = schema.postEmail.validate(req.body);
     if (value.error) {

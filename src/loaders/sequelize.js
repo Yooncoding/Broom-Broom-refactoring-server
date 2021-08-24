@@ -12,5 +12,6 @@ export default async function sequelizeLoader() {
     .catch((err) => {
       logger.error(err);
     });
+
   return sequelize;
 }
