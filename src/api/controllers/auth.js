@@ -40,7 +40,7 @@ const AuthController = {
     }
   },
 
-  putEmail: async (req, res, next) => {
+  putEmail: (req, res, next) => {
     try {
       const { key } = req.body;
       const { secretKey } = req.cookies;
@@ -50,6 +50,17 @@ const AuthController = {
         .clearCookie("secretKey")
         .status(200)
         .json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  postPassword: async (req, res, next) => {
+    try {
+      const { email, name } = req.body;
+      const password = await AuthService.postPassword(email, name);
+
+      res.status(201).json(getApi({ suc: true, data: password }));
     } catch (err) {
       next(err);
     }

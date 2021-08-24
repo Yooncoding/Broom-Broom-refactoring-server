@@ -12,6 +12,7 @@ function authRouter(root) {
   router.post("/signin", AuthController.signIn);
   router.post("/email", AuthValidators.postEmail, AuthController.postEmail);
   router.put("/email", AuthController.putEmail);
+  router.post("/password", AuthController.postPassword);
 }
 
 export default authRouter;

@@ -2,7 +2,7 @@ import CustomError from "../utils/errorhandle";
 import User from "../models/User";
 import UserAddress from "../models/UserAddress";
 import bcrypt from "bcrypt";
-import { generateKey, sendKeyByEmail } from "../utils/nodemailer";
+import { generateKey, sendKeyByEmail, generatePwd, sendPwdByEmail } from "../utils/nodemailer";
 
 const AuthService = {
   signUp: async (email, nickname, password, name) => {
@@ -56,6 +56,22 @@ const AuthService = {
       return true;
     } else {
       throw new CustomError("KEY_IS_WRONG", 400, "인증번호가 일치하지 않습니다.");
+    }
+  },
+
+  postPassword: async (email, name) => {
+    const user = await User.findOne({ where: { email } });
+    if (!user) throw new CustomError("REQUIRED_SIGNUP", 400, "가입되지 않은 이메일입니다.");
+
+    if (user.name === name) {
+      const pwd = generatePwd();
+      await sendPwdByEmail(email, name, pwd);
+      const password = await bcrypt.hash(pwd, await bcrypt.genSalt(12));
+      await User.update({ password }, { where: { email } });
+
+      return pwd;
+    } else {
+      throw new CustomError("USERINFO_IS_WRONG", 400, "일치하는 이메일, 이름이 없습니다.");
     }
   },
 };
