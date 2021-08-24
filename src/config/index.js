@@ -35,4 +35,14 @@ export default {
     secret: process.env.SECRET,
     cookie: { httpOnly: true, secure: false },
   },
+
+  // mail
+  mailOption: {
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  },
 };

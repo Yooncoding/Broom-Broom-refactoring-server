@@ -9,6 +9,7 @@ function authRouter(root) {
 
   router.post("/signup", AuthValidator.signUp, AuthController.signUp);
   router.post("/signin", AuthController.signIn);
+  router.post("/email", AuthController.postEmail);
 }
 
 export default authRouter;
