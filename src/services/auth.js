@@ -34,6 +34,7 @@ const AuthService = {
       throw err;
     }
   },
+
   postEmail: async (email) => {
     try {
       const existEmail = await User.findOne({ where: { email } });
@@ -45,6 +46,16 @@ const AuthService = {
       return key;
     } catch (err) {
       throw err;
+    }
+  },
+
+  compareKey: (key, secretKey) => {
+    if (!secretKey) throw new CustomError("NOT_COOKIE", 400, "인증번호 전송을 누르지 않아 쿠키가 없습니다.");
+
+    if (key === secretKey) {
+      return true;
+    } else {
+      throw new CustomError("KEY_IS_WRONG", 400, "인증번호가 일치하지 않습니다.");
     }
   },
 };
