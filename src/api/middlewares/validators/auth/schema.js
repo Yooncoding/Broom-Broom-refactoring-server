@@ -1,10 +1,7 @@
 import joi from "joi";
 
-const postEmail = joi.object().keys({
+const AuthSchema = {
   email: joi.string().email().min(6).required(),
-});
-
-const signUp = postEmail.keys({
   nickname: joi
     .string()
     .regex(/^[가-힣|a-z|A-Z|0-9|]{2,8}$/)
@@ -17,6 +14,15 @@ const signUp = postEmail.keys({
     .string()
     .regex(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/)
     .required(), // 영문, 숫자, 특수문자 혼합하여 8~16글자
-});
+};
 
-export { signUp, postEmail };
+const schema = {
+  signUp: joi.object({
+    ...AuthSchema,
+  }),
+  postEmail: joi.object({
+    email: AuthSchema.email,
+  }),
+};
+
+export default schema;
