@@ -19,6 +19,7 @@ export default {
     host: process.env.DB_HOST,
     timezone: "+09:00",
     dialect: "mysql",
+    logging: false,
   },
 
   // cookie
@@ -26,4 +27,22 @@ export default {
 
   // api
   api: { prefix: "/api" },
+
+  // session
+  sessionOption: {
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.SECRET,
+    cookie: { httpOnly: true, secure: false },
+  },
+
+  // mail
+  mailOption: {
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  },
 };

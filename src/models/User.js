@@ -51,6 +51,7 @@ export default class User extends Sequelize.Model {
         paranoid: true,
         charset: "utf8mb4",
         collate: "utf8mb4_general_ci",
+        indexes: [{ unique: true, fields: ["email"] }],
         hooks: {
           beforeCreate: (user) => {
             const salt = bcrypt.genSaltSync();

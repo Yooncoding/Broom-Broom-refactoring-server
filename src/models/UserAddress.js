@@ -25,7 +25,7 @@ export default class UserAddress extends Sequelize.Model {
         charset: "utf8mb4",
         collate: "utf8mb4_general_ci",
         hooks: {
-          afterCreate: (userAddress) => {
+          beforeCreate: (userAddress) => {
             userAddress.districtId = 826;
           },
         },
