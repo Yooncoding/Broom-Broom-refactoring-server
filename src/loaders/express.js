@@ -2,29 +2,22 @@ import express from "express";
 import routes from "../api/routes";
 import config from "../config";
 import cookieParser from "cookie-parser";
-import session from "express-session";
 import morgan from "morgan";
 import logger from "../utils/logger";
 import CustomError from "../utils/errorhandle";
 import passport from "passport";
 import passportConfig from "../utils/passport";
 
-export default (app) => {
+export default (app, sequelizeSession) => {
   // session option
   passportConfig();
-  const sessionMiddleware = session({
-    resave: false,
-    saveUninitialized: false,
-    secret: config.secret,
-    cookie: { httpOnly: true, secure: false },
-  });
 
   // middleware
   app.use(morgan("dev"));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser(config.secret));
-  app.use(sessionMiddleware);
+  app.use(sequelizeSession);
   app.use(passport.initialize());
   app.use(passport.session());
 

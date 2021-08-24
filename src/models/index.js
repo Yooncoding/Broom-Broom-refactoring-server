@@ -8,6 +8,7 @@ import ChatRoom from "./ChatRoom";
 import ChatMessage from "./ChatMessage";
 import District from "./District";
 import Cog from "./Cog";
+import Session from "./Session";
 
 export function init() {
   const sequelize = new Sequelize(config.database, config.username, config.password, config.db);
@@ -20,6 +21,7 @@ export function init() {
   ChatMessage.init(sequelize);
   District.init(sequelize);
   Cog.init(sequelize);
+  Session.init(sequelize);
 
   // associate
   User.hasMany(Post, { foreignKey: "sellerId", sourceKey: "id" });

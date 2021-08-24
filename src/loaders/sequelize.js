@@ -1,7 +1,7 @@
 import * as DB from "../models";
 import logger from "../utils/logger";
 
-export default async () => {
+export default async function sequelizeLoader() {
   const sequelize = DB.init();
   await sequelize
     .sync({ force: false })
@@ -12,4 +12,5 @@ export default async () => {
     .catch((err) => {
       logger.error(err);
     });
-};
+  return sequelize;
+}

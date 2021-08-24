@@ -27,4 +27,12 @@ export default {
 
   // api
   api: { prefix: "/api" },
+
+  // session
+  sessionOption: {
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.SECRET,
+    cookie: { httpOnly: true, secure: false },
+  },
 };
