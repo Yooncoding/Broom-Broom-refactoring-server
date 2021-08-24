@@ -1,11 +1,19 @@
-import schema from "./schema";
+import { signUp, postEmail } from "./schema";
 import CustomError from "../../../../utils/errorhandle";
 
 const AuthValidators = {
-  signUp: async (req, res, next) => {
-    const value = await schema.signUp.validate(req.body);
+  signUp: (req, res, next) => {
+    const value = signUp.validate(req.body);
     if (value.error) {
-      const error = new CustomError("VALID_ERROR", 406, value.error.details[0].message);
+      const error = new CustomError("VALID_ERROR", 400, value.error.details[0].message);
+      next(error);
+    }
+    next();
+  },
+  postEmail: (req, res, next) => {
+    const value = postEmail.validate(req.body);
+    if (value.error) {
+      const error = new CustomError("VALID_ERROR", 400, value.error.details[0].message);
       next(error);
     }
     next();
