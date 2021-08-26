@@ -20,6 +20,13 @@ const UserService = {
 
     return data;
   },
+
+  postEdit: async (userId, nickname, name) => {
+    const existNickname = await User.findOne({ where: { nickname } });
+    if (existNickname) throw new CustomError("EXIST_NICKNAME", 409, "이미 존재하는 닉네임입니다.");
+
+    return await User.update({ nickname, name }, { where: { id: userId } });
+  },
 };
 
 export default UserService;

@@ -46,6 +46,18 @@ const UserController = {
       next(err);
     }
   },
+
+  postEdit: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { nickname, name } = req.body;
+      await UserService.postEdit(id, nickname, name);
+
+      res.status(200).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default UserController;
