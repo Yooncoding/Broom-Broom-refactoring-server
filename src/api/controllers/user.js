@@ -70,6 +70,17 @@ const UserController = {
       next(err);
     }
   },
+
+  deleteImage: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      await UserService.deleteImage(id);
+
+      res.status(200).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default UserController;

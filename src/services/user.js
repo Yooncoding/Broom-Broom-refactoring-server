@@ -1,6 +1,7 @@
 import User from "../models/User";
 import AddressService from "./address";
 import CustomError from "../utils/errorhandle";
+import config from "../config";
 
 const UserService = {
   getUserById: async (id) => {
@@ -31,7 +32,33 @@ const UserService = {
   },
 
   putImage: async (userId, image) => {
+    const s3 = config.s3;
+    const user = await User.findByPk(userId);
+    const s3ImageKey = user.profileImageURL.split("com/")[1];
+    const DEFAULT_PROFILE_IMAGE = "https://broombroom.s3.ap-northeast-2.amazonaws.com/broomProfile-default.png";
+
+    if (user.profileImageURL !== DEFAULT_PROFILE_IMAGE) {
+      s3.deleteObject({ Bucket: "broombroom", Key: s3ImageKey }, (err) => {
+        if (err) throw err;
+      });
+    }
+
     return await User.update({ profileImageURL: image }, { where: { id: userId } });
+  },
+
+  deleteImage: async (userId) => {
+    const s3 = config.s3;
+    const user = await User.findByPk(userId);
+    const s3ImageKey = user.profileImageURL.split("com/")[1];
+    const DEFAULT_PROFILE_IMAGE = "https://broombroom.s3.ap-northeast-2.amazonaws.com/broomProfile-default.png";
+
+    if (user.profileImageURL === DEFAULT_PROFILE_IMAGE) throw new CustomError("ALREADY_DEFAULT", 400, "이미 기본 이미지입니다");
+
+    await User.update({ profileImageURL: DEFAULT_PROFILE_IMAGE }, { where: { id: userId } });
+
+    return s3.deleteObject({ Bucket: "broombroom", Key: s3ImageKey }, (err) => {
+      if (err) throw err;
+    });
   },
 };
 

@@ -14,7 +14,7 @@ function userRouter(root) {
   router.get("/me", UserController.getMe);
   router.get("/me/posts");
   router.put("/me/image", userImageUpoad.single("image"), UserController.putImage);
-  router.delete("/me/image");
+  router.delete("/me/image", UserController.deleteImage);
   router.get("/me/edit", UserController.getEdit);
   router.post("/me/edit", UserValidator.postEdit, UserController.postEdit);
   router.get("/me/point", UserController.getPoint);
