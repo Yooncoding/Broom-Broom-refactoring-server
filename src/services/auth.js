@@ -10,7 +10,7 @@ const AuthService = {
       const existEmail = await User.findOne({ where: { email } });
       if (existEmail) throw new CustomError("EXIST_EMAIL", 409, "이미 존재하는 이메일입니다.");
       const existNickname = await User.findOne({ where: { nickname } });
-      if (existNickname) throw new CustomError("EXIST_NICKNAME", 400, "이미 존재하는 닉네임입니다.");
+      if (existNickname) throw new CustomError("EXIST_NICKNAME", 409, "이미 존재하는 닉네임입니다.");
 
       const user = await User.create({ email, nickname, password, name });
       await UserAddress.create({ userId: user.id });

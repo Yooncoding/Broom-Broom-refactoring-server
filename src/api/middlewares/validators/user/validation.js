@@ -21,4 +21,15 @@ const AuthValidator = {
   },
 };
 
-export default AuthValidator;
+const UserValidator = {
+  postEdit: (req, res, next) => {
+    const value = schema.postEdit.validate(req.body);
+    if (value.error) {
+      const error = new CustomError("VALID_ERROR", 400, value.error.details[0].message);
+      next(error);
+    }
+    next();
+  },
+};
+
+export { AuthValidator, UserValidator };

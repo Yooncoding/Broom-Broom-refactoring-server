@@ -1,5 +1,6 @@
 import User from "../models/User";
 import AddressService from "./address";
+import CustomError from "../utils/errorhandle";
 
 const UserService = {
   getUserById: async (id) => {

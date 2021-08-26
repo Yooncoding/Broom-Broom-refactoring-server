@@ -1,6 +1,6 @@
 import joi from "joi";
 
-const AuthSchema = {
+const UserSchema = {
   email: joi.string().email().min(6).required(),
   nickname: joi
     .string()
@@ -18,10 +18,16 @@ const AuthSchema = {
 
 const schema = {
   signUp: joi.object({
-    ...AuthSchema,
+    ...UserSchema,
   }),
+
   postEmail: joi.object({
-    email: AuthSchema.email,
+    email: UserSchema.email,
+  }),
+
+  postEdit: joi.object({
+    nickname: UserSchema.nickname,
+    name: UserSchema.name,
   }),
 };
 
