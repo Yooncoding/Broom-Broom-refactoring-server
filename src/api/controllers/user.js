@@ -53,7 +53,19 @@ const UserController = {
       const { nickname, name } = req.body;
       await UserService.postEdit(id, nickname, name);
 
-      res.status(200).json(getApi({ suc: true }));
+      res.status(201).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  putImage: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const image = req.file.location;
+      await UserService.putImage(id, image);
+
+      res.status(201).json(getApi({ suc: true }));
     } catch (err) {
       next(err);
     }

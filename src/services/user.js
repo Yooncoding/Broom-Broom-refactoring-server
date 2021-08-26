@@ -29,6 +29,10 @@ const UserService = {
 
     return await User.update({ nickname, name }, { where: { id: userId } });
   },
+
+  putImage: async (userId, image) => {
+    return await User.update({ profileImageURL: image }, { where: { id: userId } });
+  },
 };
 
 export default UserService;
