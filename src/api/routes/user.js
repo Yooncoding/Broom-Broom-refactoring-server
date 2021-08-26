@@ -1,4 +1,5 @@
 import { Router } from "express";
+import UserController from "../controllers/user";
 import auth from "../middlewares/auth/authorization";
 
 const router = Router();
@@ -8,14 +9,14 @@ function userRouter(root) {
 
   router.use(auth.isAuthenticated);
 
-  router.get("/me");
+  router.get("/me", UserController.getMe);
   router.get("/me/posts");
   router.delete("/me/image");
-  router.get("/me/edit");
+  router.get("/me/edit", UserController.getEdit);
   router.post("/me/edit");
-  router.get("/me/point");
+  router.get("/me/point", UserController.getPoint);
   router.post("/me/point");
-  router.get("/:userId/intro");
+  router.get("/:userId/intro", UserController.getIntro);
   router.get("/:userId/posts");
 }
 

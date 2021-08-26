@@ -1,7 +1,7 @@
 import schema from "./schema";
 import CustomError from "../../../../utils/errorhandle";
 
-const AuthValidators = {
+const AuthValidator = {
   signUp: (req, res, next) => {
     const value = schema.signUp.validate(req.body);
     if (value.error) {
@@ -21,4 +21,4 @@ const AuthValidators = {
   },
 };
 
-export default AuthValidators;
+export default AuthValidator;
