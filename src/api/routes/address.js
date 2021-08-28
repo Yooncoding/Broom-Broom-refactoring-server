@@ -1,5 +1,6 @@
 import { Router } from "express";
 import AddressController from "../controllers/address";
+import { AddressValidator } from "../middlewares/validators/address/validation";
 import auth from "../middlewares/auth/authorization";
 
 const router = Router();
@@ -12,7 +13,7 @@ function addressRouter(root) {
   router.post("/me");
   router.put("/me/:districtId", AddressController.putAddress);
   router.get("/districts");
-  router.get("/near-districts");
+  router.get("/me/near-districts", AddressValidator.getNearDistricts, AddressController.getNearDistricts);
 }
 
 export default addressRouter;

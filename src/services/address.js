@@ -30,6 +30,23 @@ const AddressService = {
 
     return await UserAddress.update({ districtId, nearDistricts }, { where: { userId } });
   },
+
+  getNearDistricts: async (userId, scope) => {
+    const conn = await pool.getConn();
+    const address = await UserAddress.findOne({ where: { userId }, include: { model: District, attributes: ["geopoint"] } });
+    const [districts] = await conn.query(
+      `SELECT * FROM District WHERE ST_Intersects(geopolygon, ST_GeomFromText(ST_AsText(ST_Buffer(ST_GeomFromText(ST_AsText(ST_GeomFromText('
+      ${wkt.convert(address.District.geopoint)}', 4326))), ${scope * 0.01})), 4326));`
+    );
+    conn.release();
+
+    let nearDistricts = [];
+    districts.forEach((district) => {
+      nearDistricts.push(district.simpleName);
+    });
+
+    return nearDistricts;
+  },
 };
 
 export default AddressService;

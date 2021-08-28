@@ -24,6 +24,18 @@ const AddressController = {
       next(err);
     }
   },
+
+  getNearDistricts: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { scope } = req.query;
+
+      const nearDistricts = await AddressService.getNearDistricts(id, scope);
+      res.status(200).json(getApi({ suc: true, data: nearDistricts }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default AddressController;
