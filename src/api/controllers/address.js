@@ -25,12 +25,23 @@ const AddressController = {
     }
   },
 
+  getDistricts: async (req, res, next) => {
+    try {
+      const { name } = req.query;
+
+      const districts = await AddressService.getDistricts(name);
+      res.status(200).json(getApi({ suc: true, data: districts }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
   getNearDistricts: async (req, res, next) => {
     try {
       const { id } = req.user;
       const { scope } = req.query;
-
       const nearDistricts = await AddressService.getNearDistricts(id, scope);
+
       res.status(200).json(getApi({ suc: true, data: nearDistricts }));
     } catch (err) {
       next(err);

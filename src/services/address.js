@@ -1,5 +1,6 @@
 import UserAddress from "../models/UserAddress";
 import District from "../models/District";
+import Sequelize from "sequelize";
 import wkt from "terraformer-wkt-parser";
 import pool from "../utils/pool";
 
@@ -29,6 +30,26 @@ const AddressService = {
     nearDistricts = nearDistricts.slice(0, -1); // 마지막 "," 제거
 
     return await UserAddress.update({ districtId, nearDistricts }, { where: { userId } });
+  },
+
+  getDistricts: async (name) => {
+    const Op = Sequelize.Op;
+    name = name.trim();
+    const districts = await District.findAll({
+      where: {
+        [Op.or]: [{ simpleName: { [Op.like]: "%" + name + "%" } }, { ADMNM: { [Op.like]: "%" + name + "%" } }, { EMDNM: { [Op.like]: "%" + name + "%" } }],
+      },
+    });
+
+    let searchDistricts = [];
+    districts.forEach((district) => {
+      searchDistricts.push({
+        ADMNM: district.ADMNM,
+        districtId: district.id,
+      });
+    });
+
+    return searchDistricts;
   },
 
   getNearDistricts: async (userId, scope) => {

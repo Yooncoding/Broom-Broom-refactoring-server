@@ -12,7 +12,7 @@ function addressRouter(root) {
   router.get("/me", AddressController.getAddress);
   router.post("/me");
   router.put("/me/:districtId", AddressController.putAddress);
-  router.get("/districts");
+  router.get("/districts", AddressController.getDistricts);
   router.get("/me/near-districts", AddressValidator.getNearDistricts, AddressController.getNearDistricts);
 }
 
