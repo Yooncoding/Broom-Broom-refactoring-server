@@ -12,6 +12,18 @@ const AddressController = {
       next(err);
     }
   },
+
+  putAddress: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { districtId } = req.params;
+      await AddressService.putAddress(id, districtId);
+
+      res.status(200).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default AddressController;
