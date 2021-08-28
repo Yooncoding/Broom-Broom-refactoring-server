@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import aws from "aws-sdk";
 
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
@@ -45,4 +46,11 @@ export default {
       pass: process.env.GMAIL_PASSWORD,
     },
   },
+
+  // image upload
+  s3: new aws.S3({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: process.env.S3_REGION,
+  }),
 };
