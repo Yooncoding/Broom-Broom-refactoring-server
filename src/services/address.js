@@ -52,7 +52,7 @@ const AddressService = {
 
   getDistricts: async (name) => {
     const Op = Sequelize.Op;
-    name = name.trim();
+    if (name) name = name.trim();
     const districts = await District.findAll({
       where: {
         [Op.or]: [{ simpleName: { [Op.like]: "%" + name + "%" } }, { ADMNM: { [Op.like]: "%" + name + "%" } }, { EMDNM: { [Op.like]: "%" + name + "%" } }],
