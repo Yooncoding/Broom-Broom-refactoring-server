@@ -62,6 +62,14 @@ const AuthService = {
       throw new CustomError("USERINFO_IS_WRONG", 400, "일치하는 이메일, 이름이 없습니다.");
     }
   },
+
+  deleteAccount: async (userId, password) => {
+    const user = await User.findByPk(userid);
+    const passwordCheck = await bcrypt.compare(password, user.password);
+    if (!passwordCheck) throw new CustomError("PASSWORD_IS_WRONG", 400, "비밀번호가 일치하지 않습니다.");
+
+    return await User.destroy({ where: { id: userId } });
+  },
 };
 
 export default AuthService;

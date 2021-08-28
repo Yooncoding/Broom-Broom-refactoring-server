@@ -65,6 +65,28 @@ const AuthController = {
       next(err);
     }
   },
+
+  logout: async (req, res, next) => {
+    try {
+      req.logout();
+
+      res.status(200).json(getApi({ suc: true, mes: "로그아웃 완료. 로그인페이지로 이동합니다." }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  deleteAccount: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { password } = req.body;
+      await AuthService.deleteAccount(id, password);
+
+      res.status(200).json(getApi({ suc: true, mes: "회원탈퇴 완료. 로그인페에지로 이동합니다." }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default AuthController;
