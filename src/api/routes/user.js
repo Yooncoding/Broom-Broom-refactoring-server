@@ -18,7 +18,7 @@ function userRouter(root) {
   router.get("/me/edit", UserController.getEdit);
   router.post("/me/edit", UserValidator.postEdit, UserController.postEdit);
   router.get("/me/point", UserController.getPoint);
-  router.post("/me/point");
+  router.post("/me/point", UserValidator.postPoint, UserController.postPoint);
   router.get("/:userId/intro", UserController.getIntro);
   router.get("/:userId/posts");
 }

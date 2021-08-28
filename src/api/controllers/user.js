@@ -81,6 +81,20 @@ const UserController = {
       next(err);
     }
   },
+
+  postPoint: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { chargeAmount, refundAmount, bankName, bankAccount } = req.body;
+      const { type } = req.query;
+      if (type === "charge") await UserService.postPointCharge(id, type, chargeAmount);
+      else if (type === "refund") await UserService.postPointRefund(id, type, refundAmount, bankName, bankAccount);
+
+      res.status(201).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default UserController;

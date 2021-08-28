@@ -1,5 +1,6 @@
 import User from "../models/User";
 import AddressService from "./address";
+import CogService from "./cog";
 import CustomError from "../utils/errorhandle";
 import config from "../config";
 
@@ -59,6 +60,17 @@ const UserService = {
     return s3.deleteObject({ Bucket: "broombroom", Key: s3ImageKey }, (err) => {
       if (err) throw err;
     });
+  },
+
+  postPointRefund: async (userId, type, amount, bankName, bankAccount) => {
+    const user = await User.findByPk(userId);
+    if (amount > user.point) throw new CustomError("NOT_ENOUGH_POINT", 400, "환급하려는 포인트보다 보유 포인트가 부족합니다.");
+
+    return await CogService.postCog(type, amount, userId, bankName, bankAccount);
+  },
+
+  postPointCharge: async (userId, type, amount) => {
+    return await CogService.postCog(type, amount, userId);
   },
 };
 
