@@ -39,6 +39,15 @@ const UserValidator = {
     }
     next();
   },
+
+  getUserPosts: (req, res, next) => {
+    const value = schema.getUserPost.validate(req.query);
+    if (value.error) {
+      const error = new CustomError("VALID_ERROR", 400, value.error.details[0].message);
+      next(error);
+    }
+    next();
+  },
 };
 
 export { AuthValidator, UserValidator };

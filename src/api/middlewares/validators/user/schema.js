@@ -39,6 +39,11 @@ const schema = {
     bankName: joi.string(),
     bankAccount: joi.string(),
   }),
+
+  getUserPost: joi.object({
+    tab: joi.string().valid("sale", "done", "hold"),
+    order: joi.string().valid("date", "price_asc", "price_desc", "deadline"),
+  }),
 };
 
 export default schema;

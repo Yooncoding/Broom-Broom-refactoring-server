@@ -95,6 +95,31 @@ const UserController = {
       next(err);
     }
   },
+
+  getUserPosts: async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const order = req.query.order ? req.query.order : "date";
+      const posts = await UserService.getUserPosts(userId, order);
+
+      res.status(200).json(getApi({ suc: true, data: posts }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  getMePosts: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const order = req.query.order ? req.query.order : "date";
+      const tab = req.query.tab ? req.query.tab : "sale";
+      const posts = await UserService.getMePosts(id, order, tab);
+
+      res.status(200).json(getApi({ suc: true, data: posts }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default UserController;

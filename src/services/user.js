@@ -3,6 +3,7 @@ import AddressService from "./address";
 import CogService from "./cog";
 import CustomError from "../utils/errorhandle";
 import config from "../config";
+import PostService from "./post";
 
 const UserService = {
   getUserById: async (id) => {
@@ -71,6 +72,16 @@ const UserService = {
 
   postPointCharge: async (userId, type, amount) => {
     return await CogService.postCog(type, amount, userId);
+  },
+
+  getUserPosts: async (userId, order) => {
+    const posts = await PostService.getUserPosts(userId, order);
+    return posts;
+  },
+
+  getMePosts: async (userId, order, tab) => {
+    const posts = await PostService.getUserPosts(userId, order, tab);
+    return posts;
   },
 };
 
