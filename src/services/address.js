@@ -13,6 +13,24 @@ const AddressService = {
     return address;
   },
 
+  postAddress: async (userId, scope) => {
+    const conn = await pool.getConn();
+    const address = await UserAddress.findOne({ where: { userId }, include: { model: District, attributes: ["geopoint"] } });
+    const [districts] = await conn.query(
+      `SELECT * FROM District WHERE ST_Intersects(geopolygon, ST_GeomFromText(ST_AsText(ST_Buffer(ST_GeomFromText(ST_AsText(ST_GeomFromText('
+      ${wkt.convert(address.District.geopoint)}', 4326))), ${scope * 0.01})), 4326));`
+    );
+    conn.release();
+
+    let nearDistricts = "";
+    districts.forEach((district) => {
+      nearDistricts += district.id + ",";
+    });
+    nearDistricts = nearDistricts.slice(0, -1);
+
+    return await UserAddress.update({ nearDistricts, scope }, { where: { userId } });
+  },
+
   putAddress: async (userId, districtId) => {
     const conn = await pool.getConn();
     const address = await UserAddress.findOne({ where: { userId } });

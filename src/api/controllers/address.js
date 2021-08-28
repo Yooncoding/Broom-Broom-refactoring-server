@@ -13,6 +13,18 @@ const AddressController = {
     }
   },
 
+  postAddress: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { scope } = req.query;
+      await AddressService.postAddress(id, scope);
+
+      res.status(200).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
   putAddress: async (req, res, next) => {
     try {
       const { id } = req.user;
