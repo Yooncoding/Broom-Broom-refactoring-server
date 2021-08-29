@@ -13,6 +13,18 @@ const PostController = {
     }
   },
 
+  deletePost: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { postId } = req.params;
+      await PostService.deletePost(id, postId);
+
+      res.status(200).json(getApi({ suc: true, mes: "삭제 완료" }));
+    } catch (err) {
+      next(err);
+    }
+  },
+
   getEdit: async (req, res, next) => {
     try {
       const { id } = req.user;

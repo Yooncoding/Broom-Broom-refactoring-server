@@ -9,7 +9,7 @@ function postRouter(root) {
 
   router.use(auth.isAuthenticated);
   router.get("/:postId", PostController.getPost);
-  router.delete("/:postId");
+  router.delete("/:postId", PostController.deletePost);
   router.get("/:postId/edit", PostController.getEdit);
   router.post("/:postId/edit");
   router.get("/search");

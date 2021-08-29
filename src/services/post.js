@@ -55,6 +55,14 @@ const PostService = {
     return post;
   },
 
+  deletePost: async (userId, postId) => {
+    const post = await Post.findByPk(postId);
+    if (post.sellerId !== userId) throw new CustomError("NOT_SELLER", 403, "작성자만 삭제가 가능합니다.");
+    if (post.status !== "basic") throw new CustomError("EDIT_IS_IMPOSSIBLE", 400, "심부름의 상태가 삭제할 수 없는 상태입니다.");
+
+    return await Post.destroy({ where: { id: postId } });
+  },
+
   getEdit: async (userId, postId) => {
     const post = await Post.findOne({
       where: { id: postId },
