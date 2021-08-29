@@ -2,6 +2,7 @@ import Post from "../models/Post";
 import PostImage from "../models/PostImage";
 import District from "../models/District";
 import User from "../models/User";
+import UserAddress from "../models/UserAddress";
 import CustomError from "../utils/errorhandle";
 
 const PostService = {
@@ -78,6 +79,24 @@ const PostService = {
     if (post.status !== "basic") throw new CustomError("EDIT_IS_IMPOSSIBLE", 400, "심부름의 상태가 수정할 수 없는 상태입니다.");
 
     return post;
+  },
+
+  postPost: async (userId, title, content, price, deadline, images) => {
+    images = images.toString(); // 이미지 url을 배열이아닌 문자열타입으로 받기 위해 변환
+    const address = await UserAddress.findOne({ where: { userId } });
+
+    return await Post.create(
+      {
+        title,
+        content,
+        price,
+        deadline,
+        sellerId: userId,
+        districtId: address.districtId,
+        PostImage: { postImagesURL: images },
+      },
+      { include: { model: PostImage } }
+    );
   },
 };
 

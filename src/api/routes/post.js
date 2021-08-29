@@ -1,6 +1,7 @@
 import { Router } from "express";
 import PostController from "../controllers/post";
 import auth from "../middlewares/auth/authorization";
+import { postImageUpoad } from "../middlewares/multer";
 
 const router = Router();
 
@@ -13,7 +14,7 @@ function postRouter(root) {
   router.get("/:postId/edit", PostController.getEdit);
   router.post("/:postId/edit");
   router.get("/search");
-  router.post("/new");
+  router.post("/new", postImageUpoad.array("images"), PostController.postPost);
 }
 
 export default postRouter;
