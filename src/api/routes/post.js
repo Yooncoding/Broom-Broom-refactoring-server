@@ -8,9 +8,9 @@ function postRouter(root) {
   root.use("/posts", router);
 
   router.use(auth.isAuthenticated);
-  router.get("/:postId", PostController.getPosts);
+  router.get("/:postId", PostController.getPost);
   router.delete("/:postId");
-  router.get("/:postId/edit");
+  router.get("/:postId/edit", PostController.getEdit);
   router.post("/:postId/edit");
   router.get("/search");
   router.post("/new");
