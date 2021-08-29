@@ -1,6 +1,8 @@
 import Post from "../models/Post";
 import PostImage from "../models/PostImage";
 import District from "../models/District";
+import User from "../models/User";
+import CustomError from "../utils/errorhandle";
 
 const PostService = {
   getUserPosts: async (userId, order, tab) => {
@@ -34,6 +36,21 @@ const PostService = {
         { model: PostImage, attributes: ["postImagesURL"] },
       ],
     });
+
+    return posts;
+  },
+
+  getPosts: async (postId) => {
+    const posts = await Post.findOne({
+      where: { id: postId },
+      include: [
+        { model: User, attributes: ["id", "nickname", "profileImageURL", "manners", "createdAt"] },
+        { model: PostImage, attributes: ["postImagesURL"] },
+        { model: District, attributes: ["simpleName"] },
+      ],
+      paranoid: false,
+    });
+    if (posts.deletedAt) throw new CustomError("NOT_EXIST_POST", 404, "삭제된 심부름입니다.");
 
     return posts;
   },

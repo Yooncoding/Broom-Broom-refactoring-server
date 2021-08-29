@@ -24,8 +24,8 @@ export function init() {
   Session.init(sequelize);
 
   // associate
-  User.hasMany(Post, { foreignKey: "sellerId", sourceKey: "id" });
   User.hasMany(Post, { foreignKey: "buyerId", sourceKey: "id" });
+  User.hasMany(Post, { foreignKey: "sellerId", sourceKey: "id" });
   User.hasMany(UserAddress, { foreignKey: "userId", sourceKey: "id" });
   User.hasMany(ChatRoom, { foreignKey: "setterId", sourceKey: "id" });
   User.hasMany(ChatRoom, { foreignKey: "getterId", sourceKey: "id" });
@@ -33,9 +33,9 @@ export function init() {
   User.hasMany(Cog, { foreignKey: "userId", sourceKey: "id" });
 
   Post.hasMany(ChatRoom, { foreignKey: "postId", sourceKey: "id" });
-  Post.hasMany(PostImage, { foreignKey: "postId", sourceKey: "id" });
-  Post.belongsTo(User, { foreignKey: "sellerId", targetKey: "id" });
+  Post.hasOne(PostImage, { foreignKey: "postId", sourceKey: "id" });
   Post.belongsTo(User, { foreignKey: "buyerId", targetKey: "id" });
+  Post.belongsTo(User, { foreignKey: "sellerId", targetKey: "id" });
   Post.belongsTo(District, { foreignKey: "districtId", targetKey: "id" });
 
   UserAddress.belongsTo(User, { foreignKey: "userId", targetKey: "id" });
