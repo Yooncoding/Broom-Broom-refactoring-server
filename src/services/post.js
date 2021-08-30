@@ -98,6 +98,22 @@ const PostService = {
       { include: { model: PostImage } }
     );
   },
+
+  postEdit: async (userId, postId, title, content, price, deadline, images) => {
+    images = images.toString(); // 이미지 url을 배열이아닌 문자열타입으로 받기 위해 변환
+    const address = await UserAddress.findOne({ where: { userId } });
+
+    return await Post.update(
+      {
+        title,
+        content,
+        price,
+        deadline,
+        districtId: address.districtId,
+      },
+      { where: { id: postId } }
+    ).then(await PostImage.update({ postImagesURL: images }, { where: { postId } }));
+  },
 };
 
 export default PostService;

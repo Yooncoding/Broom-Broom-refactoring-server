@@ -52,6 +52,22 @@ const PostController = {
       next(err);
     }
   },
+
+  postEdit: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { postId } = req.params;
+      const { title, content, price, deadline } = req.body;
+      const files = req.files;
+      if (files.length === 0) throw new CustomError("EXIST_NOT_IMAGES", 400, "상품 사진을 등록해주세요.");
+      const images = files.map((file) => file.location);
+      await PostService.postEdit(id, postId, title, content, price, deadline, images);
+
+      res.status(201).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default PostController;
