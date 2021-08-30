@@ -10,8 +10,18 @@ const userStroage = multerS3({
   bucket: "broombroom",
   key: (req, file, done) => {
     const extension = file.mimetype.split("/")[1];
-    const random = Math.random().toString().substr(2, 3); // 동시에 업로드되는 경우 방지하기 위한 난수
+    const random = Math.random().toString().substr(2, 3);
     done(null, "broomProfile-" + Date.now() + random + "." + extension);
+  },
+});
+
+const postStroage = multerS3({
+  s3: s3,
+  bucket: "broombroom",
+  key: (req, file, done) => {
+    const extension = file.mimetype.split("/")[1];
+    const random = Math.random().toString().substr(2, 3); // 동시에 업로드되는 경우 이름 겹치는걸 방지하기 위한 난수
+    done(null, "broomPost-" + Date.now() + random + "." + extension);
   },
 });
 
@@ -25,5 +35,6 @@ const fileFilter = (req, file, done) => {
 };
 
 const userImageUpoad = multer({ storage: userStroage, fileFilter });
+const postImageUpoad = multer({ storage: postStroage, fileFilter });
 
-export { userImageUpoad };
+export { userImageUpoad, postImageUpoad };

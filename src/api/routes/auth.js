@@ -12,6 +12,8 @@ function authRouter(root) {
   router.post("/email", AuthValidator.postEmail, AuthController.postEmail);
   router.put("/email", AuthController.putEmail);
   router.post("/password", AuthController.postPassword);
+  router.get("/logout", AuthController.logout);
+  router.delete("/account", AuthController.deleteAccount);
 }
 
 export default authRouter;

@@ -26,6 +26,7 @@
     "nodemon": "^2.0.12"
   },
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "aws-sdk": "^2.976.0",
     "bcrypt": "^5.0.1",
     "connect-session-sequelize": "^7.1.1",
