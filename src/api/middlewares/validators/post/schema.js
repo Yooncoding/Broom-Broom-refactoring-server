@@ -25,6 +25,10 @@ const schema = {
     tab: joi.string().valid("buy", "selling", "sold"),
     page: joi.number().integer(),
   }),
+
+  postReviewPost: joi.object({
+    review: joi.number().integer().min(0).max(10).required(),
+  }),
 };
 
 export default schema;

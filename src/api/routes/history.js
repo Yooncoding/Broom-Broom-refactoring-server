@@ -10,7 +10,7 @@ function histroyRouter(root) {
 
   router.use(auth.isAuthenticated);
   router.get("/", HistoryValidator.getHistoryPosts, HistoryController.getHistory); // ?tab=buy, ?tab=selling, ?tab=sold
-  router.post("/review/:postId", HistoryController.postReview);
+  router.post("/review/:postId", HistoryValidator.postReviewPost, HistoryController.postReview);
 }
 
 export default histroyRouter;

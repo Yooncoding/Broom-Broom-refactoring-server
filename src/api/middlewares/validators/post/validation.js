@@ -41,6 +41,15 @@ const HistoryValidator = {
     }
     next();
   },
+
+  postReviewPost: (req, res, next) => {
+    const value = schema.postReviewPost.validate(req.query);
+    if (value.error) {
+      const error = new CustomError("VALID_ERROR", 400, value.error.details[0].message);
+      next(error);
+    }
+    next();
+  },
 };
 
 export { PostValidator, MainValidator, HistoryValidator };
