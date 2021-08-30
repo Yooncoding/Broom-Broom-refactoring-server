@@ -68,6 +68,21 @@ const PostController = {
       next(err);
     }
   },
+
+  getSearch: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { q } = req.query;
+      const order = req.query.order ? req.query.order : "date";
+      const page = req.query.page ? req.query.page : 1;
+      const filter = req.query.filter ? req.query.filter : "false";
+      const posts = await PostService.getSearch(id, q, order, filter, page);
+
+      res.status(200).json(getApi({ suc: true, data: posts }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default PostController;

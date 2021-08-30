@@ -4,13 +4,12 @@ import District from "../models/District";
 import User from "../models/User";
 import UserAddress from "../models/UserAddress";
 import CustomError from "../utils/errorhandle";
+import Sequelize from "sequelize";
 
 const PostService = {
   getUserPosts: async (userId, order, tab) => {
     let orderTarget = "createdAt";
     let orderMethod = "desc";
-    let tabTarget = "basic";
-
     if (order === "date") orderTarget = "createdAt";
     if (order === "price_desc") orderTarget = "price";
     if (order === "price_asc") {
@@ -22,6 +21,7 @@ const PostService = {
       orderMethod = "asc";
     }
 
+    let tabTarget = "basic";
     if (tab === "sale") tabTarget = "basic";
     if (tab === "done") tabTarget = ["start", "end"];
     if (tab === "hold") tabTarget = ["stop", "close"];
@@ -113,6 +113,55 @@ const PostService = {
       },
       { where: { id: postId } }
     ).then(await PostImage.update({ postImagesURL: images }, { where: { postId } }));
+  },
+
+  getSearch: async (userId, q, order, filter, page) => {
+    const Op = Sequelize.Op;
+    if (q) q = q.trim();
+    let splitedWord = q.split(" "); // 띄어쓰기별 단어 분리
+    let combinedWord = ""; // 띄어쓰기 합치기
+    splitedWord.forEach((word) => {
+      combinedWord += word;
+    });
+
+    const PAGE_SIZE = 20; // 20개씩 pagination
+    const offset = (page - 1) * PAGE_SIZE;
+
+    let orderTarget = "createdAt";
+    let orderMethod = "desc";
+    if (order === "date") orderTarget = "createdAt";
+    if (order === "price_desc") orderTarget = "price";
+    if (order === "price_asc") {
+      orderTarget = "price";
+      orderMethod = "asc";
+    }
+    if (order === "deadline") {
+      orderTarget = "deadline";
+      orderMethod = "asc";
+    }
+
+    let filterTarget = "basic";
+    if (filter === "true") filterTarget = "basic";
+    if (filter === "false") filterTarget = ["basic", "start", "end", "stop", "close"];
+
+    const address = await UserAddress.findOne({ where: { userId }, attributes: ["nearDistricts"] });
+    const nearDistricts = address.nearDistricts.split(",");
+    const posts = await Post.findAll({
+      where: {
+        districtId: { [Op.in]: nearDistricts },
+        status: filterTarget,
+        title: { [Op.or]: [{ [Op.like]: "%" + q + "%" }, { [Op.like]: "%" + combinedWord + "%" }, { [Op.regexp]: splitedWord.join("|") }] },
+      },
+      order: [[orderTarget, orderMethod]],
+      include: [
+        { model: District, attributes: ["simpleName"] },
+        { model: PostImage, attributes: ["postImagesURL"] },
+      ],
+      offset: offset,
+      limit: PAGE_SIZE,
+    });
+
+    return posts;
   },
 };
 

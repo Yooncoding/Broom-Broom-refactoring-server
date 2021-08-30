@@ -9,6 +9,13 @@ const schema = {
     price: joi.number().integer().min(1000).required(),
     deadline: joi.date().format("YYYY-MM-DD HH:mm").required(),
   }),
+
+  getSearch: joi.object({
+    q: joi.string().min(2).required(),
+    order: joi.string().valid("date", "price_asc", "price_desc", "deadline"),
+    filter: joi.string().valid("true", "false"),
+    page: joi.number().integer(),
+  }),
 };
 
 export default schema;
