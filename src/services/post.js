@@ -41,6 +41,28 @@ const PostService = {
     return posts;
   },
 
+  getMainPosts: async (userId, page) => {
+    const Op = Sequelize.Op;
+
+    const PAGE_SIZE = 20; // 20개씩 pagination
+    const offset = (page - 1) * PAGE_SIZE;
+
+    const address = await UserAddress.findOne({ where: { userId }, attributes: ["nearDistricts"] });
+    const nearDistricts = address.nearDistricts.split(",");
+    const posts = await Post.findAll({
+      where: { districtId: { [Op.in]: nearDistricts } },
+      include: [
+        { model: District, attributes: ["simpleName"] },
+        { model: PostImage, attributes: ["postImagesURL"] },
+      ],
+      order: [["createdAt", "desc"]],
+      offset: offset,
+      limit: PAGE_SIZE,
+    });
+
+    return posts;
+  },
+
   getPost: async (postId) => {
     const post = await Post.findOne({
       where: { id: postId },

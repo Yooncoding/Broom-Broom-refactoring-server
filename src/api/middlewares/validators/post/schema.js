@@ -16,6 +16,10 @@ const schema = {
     filter: joi.string().valid("true", "false"),
     page: joi.number().integer(),
   }),
+
+  getMainPosts: joi.object({
+    page: joi.number().integer(),
+  }),
 };
 
 export default schema;
