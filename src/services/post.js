@@ -185,6 +185,36 @@ const PostService = {
 
     return posts;
   },
+
+  getHistoryPosts: async (userId, tab, page) => {
+    const PAGE_SIZE = 20; // 20개씩 pagination
+    const offset = (page - 1) * PAGE_SIZE;
+
+    let tabTarget = "start";
+    let tabUser = "sellerId";
+    if (tab === "selling") tabTarget = "start";
+    if (tab === "sold") tabTarget = "end";
+    if (tab === "buy") {
+      tabTarget = ["start", "end", "stop"];
+      tabUser = "buyerId";
+    }
+
+    const posts = await Post.findAll({
+      where: {
+        [tabUser]: userId,
+        status: tabTarget,
+      },
+      include: [
+        { model: District, attributes: ["simpleName"] },
+        { model: PostImage, attributes: ["postImagesURL"] },
+      ],
+      order: [["createdAt", "desc"]],
+      offset: offset,
+      limit: PAGE_SIZE,
+    });
+
+    return posts;
+  },
 };
 
 export default PostService;
