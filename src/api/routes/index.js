@@ -4,6 +4,7 @@ import userRouter from "./user";
 import addressRouter from "./address";
 import postRouter from "./post";
 import mainRouter from "./main";
+import historyRouter from "./history";
 
 const rootRouter = Router();
 
@@ -13,6 +14,7 @@ export default () => {
   userRouter(rootRouter);
   addressRouter(rootRouter);
   postRouter(rootRouter);
+  historyRouter(rootRouter);
 
   return rootRouter;
 };
