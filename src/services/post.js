@@ -215,6 +215,22 @@ const PostService = {
 
     return posts;
   },
+
+  postReviewPost: async (userId, postId, review) => {
+    const Op = Sequelize.Op;
+    review = Number(review);
+
+    const post = await Post.findByPk(postId);
+    if (post.review) throw new CustomError("EXIST_REVIEW", 400, "이미 리뷰작성이 완료된 심부름입니다.");
+    if (post.sellerId !== userId) throw new CustomError("NOT_SELLER", 403, "작성자만 리뷰작성이 가능합니다.");
+    if (post.status !== "end") throw new CustomError("NOT_END_YET", 400, "아직 보상지급이 완료되지 않은 심부름입니다.");
+
+    const buyer = await User.findOne({ where: { id: post.buyerId }, attributes: ["id", "manners"] }); // 매너점수를 포함한 구매자의 정보
+    const buyCount = await Post.count({ where: { buyerId: buyer.id, review: { [Op.not]: null } } }); // 구매자의 리뷰받은 횟수
+    const updateManners = ((buyer.manners * buyCount + review) / (buyCount + 1)).toFixed(2); // 새로 갱신된 리뷰점수
+
+    return await Post.update({ review }, { where: { id: postId } }).then(await User.update({ manners: updateManners }, { where: { id: buyer.id } }));
+  },
 };
 
 export default PostService;

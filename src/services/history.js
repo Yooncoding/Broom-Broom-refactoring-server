@@ -5,6 +5,10 @@ const HistoryService = {
     const posts = await PostService.getHistoryPosts(userId, tab, page);
     return posts;
   },
+
+  postReview: async (userId, postId, review) => {
+    return await PostService.postReviewPost(userId, postId, review);
+  },
 };
 
 export default HistoryService;

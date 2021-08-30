@@ -14,5 +14,18 @@ const HistoryController = {
       next(err);
     }
   },
+
+  postReview: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { postId } = req.params;
+      const { review } = req.query;
+      await HistoryService.postReview(id, postId, review);
+
+      res.status(201).json(getApi({ suc: true }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 export default HistoryController;
