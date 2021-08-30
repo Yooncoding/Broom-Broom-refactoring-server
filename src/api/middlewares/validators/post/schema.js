@@ -20,6 +20,11 @@ const schema = {
   getMainPosts: joi.object({
     page: joi.number().integer(),
   }),
+
+  getHistoryPosts: joi.object({
+    tab: joi.string().valid("buy", "selling", "sold"),
+    page: joi.number().integer(),
+  }),
 };
 
 export default schema;
