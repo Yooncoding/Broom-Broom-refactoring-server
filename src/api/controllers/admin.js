@@ -26,6 +26,17 @@ const AdminController = {
       next(err);
     }
   },
+
+  deleteCog: async (req, res, next) => {
+    try {
+      const { cogId } = req.params;
+      const result = await AdminService.deleteCog(cogId);
+
+      res.status(200).json(getApi({ suc: true, mes: `${result} 요청을 승인합니다.` }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default AdminController;

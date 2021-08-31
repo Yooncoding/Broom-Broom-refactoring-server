@@ -10,6 +10,11 @@ const AdminService = {
     const status = await CogService.putCog(cogId);
     return status;
   },
+
+  deleteCog: async (cogId) => {
+    const type = await CogService.deleteCog(cogId);
+    return type;
+  },
 };
 
 export default AdminService;

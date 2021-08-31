@@ -11,7 +11,7 @@ function adminRouter(root) {
   router.use(auth.isAdmin);
   router.get("/cog", AdminValidator.getCog, AdminController.getCog);
   router.put("/cog/:cogId", AdminController.putCog);
-  router.delete("/cog/:cogId");
+  router.delete("/cog/:cogId", AdminController.deleteCog);
 }
 
 export default adminRouter;
