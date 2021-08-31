@@ -15,6 +15,17 @@ const AdminController = {
       next(err);
     }
   },
+
+  putCog: async (req, res, next) => {
+    try {
+      const { cogId } = req.params;
+      const result = await AdminService.putCog(cogId);
+
+      res.status(201).json(getApi({ suc: true, mes: `${result}에서 요청 상태를 변경합니다.` }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default AdminController;

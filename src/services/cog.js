@@ -1,4 +1,5 @@
 import Cog from "../models/Cog";
+import CustomError from "../utils/errorhandle";
 
 const CogService = {
   postCog: async (type, amount, userId, bankName, bankAccount) => {
@@ -33,6 +34,16 @@ const CogService = {
     });
 
     return cog;
+  },
+
+  putCog: async (cogId) => {
+    const cog = await Cog.findByPk(cogId);
+    if (!cog) throw new CustomError("", 400, "이미 처리가 완료된 요청입니다.");
+
+    if (cog.status === "basic") await Cog.update({ status: "hold" }, { where: { id: cogId } });
+    if (cog.status === "hold") await Cog.update({ status: "basic" }, { where: { id: cogId } });
+
+    return cog.status;
   },
 };
 
