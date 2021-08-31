@@ -5,6 +5,7 @@ import addressRouter from "./address";
 import postRouter from "./post";
 import mainRouter from "./main";
 import historyRouter from "./history";
+import adminRouter from "./admin";
 
 const rootRouter = Router();
 
@@ -15,6 +16,7 @@ export default () => {
   addressRouter(rootRouter);
   postRouter(rootRouter);
   historyRouter(rootRouter);
+  adminRouter(rootRouter);
 
   return rootRouter;
 };
