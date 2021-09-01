@@ -61,6 +61,20 @@ const ChatService = {
 
     return room;
   },
+
+  postMessage: async (userId, roomId, content) => {
+    const message = await ChatMessage.create({ content, senderId: userId, roomId });
+    await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
+
+    return message;
+  },
+
+  postImage: async (userId, roomId, image) => {
+    const message = await ChatMessage.create({ messageImageURL: image, senderId: userId, roomId });
+    await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
+
+    return message;
+  },
 };
 
 export default ChatService;

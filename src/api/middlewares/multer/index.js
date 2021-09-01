@@ -25,6 +25,16 @@ const postStroage = multerS3({
   },
 });
 
+const messageStroage = multerS3({
+  s3: s3,
+  bucket: "broombroom",
+  key: (req, file, done) => {
+    const extension = file.mimetype.split("/")[1];
+    const random = Math.random().toString().substr(2, 3); // 동시에 업로드되는 경우 이름 겹치는걸 방지하기 위한 난수
+    done(null, "broomMessage-" + Date.now() + random + "." + extension);
+  },
+});
+
 const fileFilter = (req, file, done) => {
   const extension = file.mimetype.split("/")[1];
   if (extension === "jpg" || extension === "jpeg" || extension === "png") done(null, true);
@@ -36,5 +46,6 @@ const fileFilter = (req, file, done) => {
 
 const userImageUpoad = multer({ storage: userStroage, fileFilter });
 const postImageUpoad = multer({ storage: postStroage, fileFilter });
+const messageImageUpoad = multer({ storage: messageStroage, fileFilter });
 
-export { userImageUpoad, postImageUpoad };
+export { userImageUpoad, postImageUpoad, messageImageUpoad };
