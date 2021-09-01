@@ -11,11 +11,11 @@ function postRouter(root) {
 
   router.use(auth.isAuthenticated);
   router.get("/search", PostValidator.getSearch, PostController.getSearch);
+  router.post("/new", postImageUpoad.array("images"), PostController.postPost);
   router.get("/:postId", PostController.getPost);
   router.delete("/:postId", PostController.deletePost);
   router.get("/:postId/edit", PostController.getEdit);
   router.post("/:postId/edit", postImageUpoad.array("images"), PostController.postEdit);
-  router.post("/new", postImageUpoad.array("images"), PostController.postPost);
 }
 
 export default postRouter;

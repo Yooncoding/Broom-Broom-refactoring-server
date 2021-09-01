@@ -106,8 +106,7 @@ const PostService = {
   postPost: async (userId, title, content, price, deadline, images) => {
     images = images.toString(); // 이미지 url을 배열이아닌 문자열타입으로 받기 위해 변환
     const address = await UserAddress.findOne({ where: { userId } });
-
-    return await Post.create(
+    const post = await Post.create(
       {
         title,
         content,
@@ -119,6 +118,8 @@ const PostService = {
       },
       { include: { model: PostImage } }
     );
+
+    return post;
   },
 
   postEdit: async (userId, postId, title, content, price, deadline, images) => {

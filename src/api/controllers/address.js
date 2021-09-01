@@ -5,9 +5,9 @@ const AddressController = {
   getAddress: async (req, res, next) => {
     try {
       const { id } = req.user;
-      const data = await AddressService.getAddress(id);
+      const address = await AddressService.getAddress(id);
 
-      res.status(200).json(getApi({ suc: true, data }));
+      res.status(200).json(getApi({ suc: true, data: address }));
     } catch (err) {
       next(err);
     }
@@ -19,7 +19,7 @@ const AddressController = {
       const { scope } = req.query;
       await AddressService.postAddress(id, scope);
 
-      res.status(200).json(getApi({ suc: true }));
+      res.status(200).json(getApi({ suc: true, mes: "활동지역 변경완료." }));
     } catch (err) {
       next(err);
     }
@@ -31,7 +31,7 @@ const AddressController = {
       const { districtId } = req.params;
       await AddressService.putAddress(id, districtId);
 
-      res.status(200).json(getApi({ suc: true }));
+      res.status(200).json(getApi({ suc: true, mes: "기준지역 변경완료" }));
     } catch (err) {
       next(err);
     }

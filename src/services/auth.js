@@ -8,6 +8,7 @@ const AuthService = {
   signUp: async (email, nickname, password, name) => {
     const existEmail = await User.findOne({ where: { email } });
     if (existEmail) throw new CustomError("EXIST_EMAIL", 409, "이미 존재하는 이메일입니다.");
+
     const existNickname = await User.findOne({ where: { nickname } });
     if (existNickname) throw new CustomError("EXIST_NICKNAME", 409, "이미 존재하는 닉네임입니다.");
 
@@ -40,27 +41,23 @@ const AuthService = {
   compareKey: (key, secretKey) => {
     if (!secretKey) throw new CustomError("NOT_COOKIE", 404, "인증번호 전송을 누르지 않아 쿠키가 없습니다.");
 
-    if (key === secretKey) {
-      return true;
-    } else {
-      throw new CustomError("KEY_IS_WRONG", 400, "인증번호가 일치하지 않습니다.");
-    }
+    if (key !== secretKey) throw new CustomError("KEY_IS_WRONG", 400, "인증번호가 일치하지 않습니다.");
+
+    return true;
   },
 
   postPassword: async (email, name) => {
     const user = await User.findOne({ where: { email } });
     if (!user) throw new CustomError("REQUIRED_SIGNUP", 400, "가입되지 않은 이메일입니다.");
 
-    if (user.name === name) {
-      const pwd = generatePwd();
-      await sendPwdByEmail(email, name, pwd);
-      const password = await bcrypt.hash(pwd, await bcrypt.genSalt(12));
-      await User.update({ password }, { where: { email } });
+    if (user.name !== name) throw new CustomError("USERINFO_IS_WRONG", 400, "일치하는 이메일, 이름이 없습니다.");
 
-      return pwd;
-    } else {
-      throw new CustomError("USERINFO_IS_WRONG", 400, "일치하는 이메일, 이름이 없습니다.");
-    }
+    const pwd = generatePwd();
+    await sendPwdByEmail(email, name, pwd);
+    const password = await bcrypt.hash(pwd, await bcrypt.genSalt(12));
+    await User.update({ password }, { where: { email } });
+
+    return pwd;
   },
 
   deleteAccount: async (userId, password) => {

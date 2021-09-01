@@ -9,7 +9,7 @@ function histroyRouter(root) {
   root.use("/usage-history", router);
 
   router.use(auth.isAuthenticated);
-  router.get("/", HistoryValidator.getHistoryPosts, HistoryController.getHistory); // ?tab=buy, ?tab=selling, ?tab=sold
+  router.get("/", HistoryValidator.getHistoryPosts, HistoryController.getHistory);
   router.post("/review/:postId", HistoryValidator.postReviewPost, HistoryController.postReview);
 }
 

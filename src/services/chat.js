@@ -54,7 +54,7 @@ const ChatService = {
 
   postRoom: async (userId, postId) => {
     const post = await Post.findOne({ where: { id: postId }, attributes: ["id", "sellerId"] });
-    if (post.sellerId === userId) throw new CustomError("", 400, "본인이 게시한 심부름은 채팅방 개설이 불가능합니다.");
+    if (post.sellerId === userId) throw new CustomError("CREATING_IS_IMPOSSIBLE", 400, "본인이 게시한 심부름은 채팅방 개설이 불가능합니다.");
 
     const room = await ChatRoom.findOne({ where: { postId, setterId: userId } });
     if (!room) return await ChatRoom.create({ postId, setterId: userId, getterId: post.sellerId });
@@ -84,9 +84,9 @@ const ChatService = {
     let typeTarget = "";
     if (type === "contract") {
       typeTarget = "start";
-      if (post.status !== "basic") throw new CustomError("", 400, "심부름이 약속확정이 불가능한 상태입니다.");
-      if (post.sellerId !== userId) throw new CustomError("", 400, "글 작성자만 약속확정이 가능합니다.");
-      if (post.price > user.point) throw new CustomError("", 400, "소지하신 포인트가 부족하여 약속확정이 불가능합니다.");
+      if (post.status !== "basic") throw new CustomError("EDIT_IS_IMPOSSIBLE", 400, "심부름이 약속확정이 불가능한 상태입니다.");
+      if (post.sellerId !== userId) throw new CustomError("NOT_SELLER", 403, "심부름 작성자만 약속확정이 가능합니다.");
+      if (post.price > user.point) throw new CustomError("NOT_ENOUGH_POINT", 400, "소지하신 포인트가 부족하여 약속확정이 불가능합니다.");
 
       await Post.update({ status: typeTarget, buyerId: room.setterId }, { where: { id: postId } });
       await User.update({ point: user.point - post.price }, { where: { id: userId } });
@@ -98,8 +98,8 @@ const ChatService = {
 
     if (type === "reward") {
       typeTarget = "end";
-      if (post.status !== "start" && post.status !== "stop") throw new CustomError("", 400, "심부름이 보상지급이 불가능한 상태입니다.");
-      if (post.sellerId !== userId) throw new CustomError("", 400, "글 작성자만 보상지급이 가능합니다.");
+      if (post.status !== "start" && post.status !== "stop") throw new CustomError("EDIT_IS_IMPOSSIBLE", 400, "심부름이 보상지급이 불가능한 상태입니다.");
+      if (post.sellerId !== userId) throw new CustomError("NOT_SELLER", 403, "심부름 작성자만 보상지급이 가능합니다.");
 
       const buyer = await User.findOne({ where: { id: post.buyerId } });
       await Post.update({ status: typeTarget }, { where: { id: postId } });
@@ -112,8 +112,8 @@ const ChatService = {
 
     if (type === "hold") {
       typeTarget = "stop";
-      if (post.status !== "start") throw new CustomError("", 400, "심부름이 지급보류가 불가능한 상태입니다.");
-      if (post.sellerId !== userId) throw new CustomError("", 400, "글 작성자만 지급보류가 가능합니다.");
+      if (post.status !== "start") throw new CustomError("EDIT_IS_IMPOSSIBLE", 400, "심부름이 지급보류가 불가능한 상태입니다.");
+      if (post.sellerId !== userId) throw new CustomError("NOT_SELLER", 403, "심부름 작성자만 지급보류가 가능합니다.");
 
       await Post.update({ status: typeTarget }, { where: { id: postId } });
       const message = await ChatMessage.create({ content: `[SYSTEM] 심부름 보류상태로 변경되었습니다.`, roomId });

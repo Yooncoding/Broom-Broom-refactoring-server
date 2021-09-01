@@ -39,9 +39,9 @@ const UserController = {
     try {
       const { id } = req.user;
       const user = await UserService.getUser(id);
-      const data = user.point;
+      const point = user.point;
 
-      res.status(200).json(getApi({ suc: true, data }));
+      res.status(200).json(getApi({ suc: true, data: point }));
     } catch (err) {
       next(err);
     }
@@ -53,7 +53,7 @@ const UserController = {
       const { nickname, name } = req.body;
       await UserService.postEdit(id, nickname, name);
 
-      res.status(201).json(getApi({ suc: true }));
+      res.status(200).json(getApi({ suc: true, mes: "프로필 수정 완료" }));
     } catch (err) {
       next(err);
     }
@@ -65,7 +65,7 @@ const UserController = {
       const image = req.file.location;
       await UserService.putImage(id, image);
 
-      res.status(201).json(getApi({ suc: true }));
+      res.status(201).json(getApi({ suc: true, mes: "프로필이미지 수정 완료" }));
     } catch (err) {
       next(err);
     }
@@ -76,7 +76,7 @@ const UserController = {
       const { id } = req.user;
       await UserService.deleteImage(id);
 
-      res.status(200).json(getApi({ suc: true }));
+      res.status(200).json(getApi({ suc: true, mes: "프로필이미지 삭제 완료" }));
     } catch (err) {
       next(err);
     }
@@ -90,7 +90,7 @@ const UserController = {
       if (type === "charge") await UserService.postPointCharge(id, type, chargeAmount);
       else if (type === "refund") await UserService.postPointRefund(id, type, refundAmount, bankName, bankAccount);
 
-      res.status(201).json(getApi({ suc: true }));
+      res.status(201).json(getApi({ suc: true, mes: "요청 완료" }));
     } catch (err) {
       next(err);
     }

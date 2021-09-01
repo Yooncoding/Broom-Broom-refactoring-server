@@ -44,10 +44,11 @@ const PostController = {
       const { title, content, price, deadline } = req.body;
       const files = req.files;
       if (files.length === 0) throw new CustomError("EXIST_NOT_IMAGES", 400, "상품 사진을 등록해주세요.");
-      const images = files.map((file) => file.location);
-      await PostService.postPost(id, title, content, price, deadline, images);
 
-      res.status(201).json(getApi({ suc: true }));
+      const images = files.map((file) => file.location);
+      const post = await PostService.postPost(id, title, content, price, deadline, images);
+
+      res.status(201).json(getApi({ suc: true, data: post }));
     } catch (err) {
       next(err);
     }
@@ -60,10 +61,11 @@ const PostController = {
       const { title, content, price, deadline } = req.body;
       const files = req.files;
       if (files.length === 0) throw new CustomError("EXIST_NOT_IMAGES", 400, "상품 사진을 등록해주세요.");
+
       const images = files.map((file) => file.location);
       await PostService.postEdit(id, postId, title, content, price, deadline, images);
 
-      res.status(201).json(getApi({ suc: true }));
+      res.status(200).json(getApi({ suc: true, mes: "심부름 수정 완료" }));
     } catch (err) {
       next(err);
     }

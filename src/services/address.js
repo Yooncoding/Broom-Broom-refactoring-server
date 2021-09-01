@@ -10,6 +10,7 @@ const AddressService = {
       where: { userId },
       include: { model: District, attributes: ["simpleName"] },
     });
+
     return address;
   },
 

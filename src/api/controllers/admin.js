@@ -21,7 +21,7 @@ const AdminController = {
       const { cogId } = req.params;
       const result = await AdminService.putCog(cogId);
 
-      res.status(201).json(getApi({ suc: true, mes: `${result}에서 요청 상태를 변경합니다.` }));
+      res.status(201).json(getApi({ suc: true, mes: `${result}에서 요청상태 변경` }));
     } catch (err) {
       next(err);
     }
@@ -32,7 +32,7 @@ const AdminController = {
       const { cogId } = req.params;
       const result = await AdminService.deleteCog(cogId);
 
-      res.status(200).json(getApi({ suc: true, mes: `${result} 요청을 승인합니다.` }));
+      res.status(200).json(getApi({ suc: true, mes: `${result} 요청 승인` }));
     } catch (err) {
       next(err);
     }

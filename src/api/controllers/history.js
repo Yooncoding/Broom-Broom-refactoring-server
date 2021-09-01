@@ -22,7 +22,7 @@ const HistoryController = {
       const { review } = req.query;
       await HistoryService.postReview(id, postId, review);
 
-      res.status(201).json(getApi({ suc: true }));
+      res.status(201).json(getApi({ suc: true, mes: "리뷰점수 등록" }));
     } catch (err) {
       next(err);
     }

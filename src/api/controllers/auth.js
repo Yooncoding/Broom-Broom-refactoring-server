@@ -49,7 +49,7 @@ const AuthController = {
       res
         .clearCookie("secretKey")
         .status(200)
-        .json(getApi({ suc: true }));
+        .json(getApi({ suc: true, mes: "이메일 인증 완료" }));
     } catch (err) {
       next(err);
     }
