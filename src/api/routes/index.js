@@ -6,6 +6,7 @@ import postRouter from "./post";
 import mainRouter from "./main";
 import historyRouter from "./history";
 import adminRouter from "./admin";
+import chatRouter from "./chat";
 
 const rootRouter = Router();
 
@@ -17,6 +18,7 @@ export default () => {
   postRouter(rootRouter);
   historyRouter(rootRouter);
   adminRouter(rootRouter);
+  chatRouter(rootRouter);
 
   return rootRouter;
 };
