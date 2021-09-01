@@ -10,12 +10,12 @@ function chatRouter(root) {
   root.use("/chat", router);
 
   router.use(auth.isAuthenticated);
-  router.get("/rooms", ChatController.getRooms); // 채팅방 목록 조회
-  router.get("/rooms/:roomId", ChatController.getRoom); // 채팅방 채팅내용 조회
-  router.post("/rooms/:roomId/message", ChatValidator.postMessage, ChatController.postMessage); // 채팅 메세지 저장
-  router.post("/rooms/:roomId/image", messageImageUpoad.single("image"), ChatController.postImage); // 채팅 이미지 저장
-  router.put("/rooms/:roomId/status/:postId", ChatController.putStatus); // 게시글 상태 조정
-  router.post("/room/:postId", ChatController.postRoom); // 채팅방 생성
+  router.get("/rooms", ChatController.getRooms);
+  router.get("/rooms/:roomId", ChatController.getRoom);
+  router.post("/rooms/:roomId/message", ChatValidator.postMessage, ChatController.postMessage);
+  router.post("/rooms/:roomId/image", messageImageUpoad.single("image"), ChatController.postImage);
+  router.put("/rooms/:roomId/status/:postId", ChatController.putStatus);
+  router.post("/room/:postId", ChatValidator.putStatus, ChatController.postRoom);
 }
 
 export default chatRouter;
