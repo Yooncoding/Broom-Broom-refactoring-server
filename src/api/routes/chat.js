@@ -13,7 +13,7 @@ function chatRouter(root) {
   router.post("/rooms/:roomId/message"); // 채팅 메세지 저장
   router.post("/rooms/:roomId/image"); // 채팅 이미지 저장
   router.put("/rooms/:roomId/status"); // 게시글 상태 조정
-  router.post("/room/:postId"); // 채팅방 생성
+  router.post("/room/:postId", ChatController.postRoom); // 채팅방 생성
 }
 
 export default chatRouter;

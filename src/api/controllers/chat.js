@@ -23,6 +23,18 @@ const ChatController = {
       next(err);
     }
   },
+
+  postRoom: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { postId } = req.params;
+      const room = await ChatService.postRoom(id, postId);
+
+      res.status(201).json(getApi({ suc: true, data: room }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default ChatController;
