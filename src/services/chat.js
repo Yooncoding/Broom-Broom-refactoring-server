@@ -75,6 +75,53 @@ const ChatService = {
 
     return message;
   },
+
+  putStatus: async (userId, roomId, postId, type) => {
+    const room = await ChatRoom.findOne({ where: { id: roomId } });
+    const post = await Post.findOne({ where: { id: postId } });
+    const user = await User.findOne({ where: { id: userId } });
+
+    let typeTarget = "";
+    if (type === "contract") {
+      typeTarget = "start";
+      if (post.status !== "basic") throw new CustomError("", 400, "심부름이 약속확정이 불가능한 상태입니다.");
+      if (post.sellerId !== userId) throw new CustomError("", 400, "글 작성자만 약속확정이 가능합니다.");
+      if (post.price > user.point) throw new CustomError("", 400, "소지하신 포인트가 부족하여 약속확정이 불가능합니다.");
+
+      await Post.update({ status: typeTarget, buyerId: room.setterId }, { where: { id: postId } });
+      await User.update({ point: user.point - post.price }, { where: { id: userId } });
+      const message = await ChatMessage.create({ content: `[SYSTEM] 심부름 진행상태로 변경되었습니다.`, roomId });
+      await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
+
+      return message;
+    }
+
+    if (type === "reward") {
+      typeTarget = "end";
+      if (post.status !== "start" && post.status !== "stop") throw new CustomError("", 400, "심부름이 보상지급이 불가능한 상태입니다.");
+      if (post.sellerId !== userId) throw new CustomError("", 400, "글 작성자만 보상지급이 가능합니다.");
+
+      const buyer = await User.findOne({ where: { id: post.buyerId } });
+      await Post.update({ status: typeTarget }, { where: { id: postId } });
+      await User.update({ point: buyer.point + post.price }, { where: { id: buyer.id } });
+      const message = await ChatMessage.create({ content: `[SYSTEM] 심부름 완료상태로 변경되었습니다.`, roomId });
+      await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
+
+      return message;
+    }
+
+    if (type === "hold") {
+      typeTarget = "stop";
+      if (post.status !== "start") throw new CustomError("", 400, "심부름이 지급보류가 불가능한 상태입니다.");
+      if (post.sellerId !== userId) throw new CustomError("", 400, "글 작성자만 지급보류가 가능합니다.");
+
+      await Post.update({ status: typeTarget }, { where: { id: postId } });
+      const message = await ChatMessage.create({ content: `[SYSTEM] 심부름 보류상태로 변경되었습니다.`, roomId });
+      await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
+
+      return message;
+    }
+  },
 };
 
 export default ChatService;

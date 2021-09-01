@@ -61,6 +61,19 @@ const ChatController = {
       next(err);
     }
   },
+
+  putStatus: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { roomId, postId } = req.params;
+      const { type } = req.query;
+
+      const message = await ChatService.putStatus(id, roomId, postId, type);
+      res.status(200).json(getApi({ suc: true, data: message }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default ChatController;
