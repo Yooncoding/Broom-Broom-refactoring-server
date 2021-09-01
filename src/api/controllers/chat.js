@@ -12,6 +12,17 @@ const ChatController = {
       next(err);
     }
   },
+
+  getRoom: async (req, res, next) => {
+    try {
+      const { roomId } = req.params;
+      const room = await ChatService.getRoom(roomId);
+
+      res.status(200).json(getApi({ suc: true, data: room }));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default ChatController;
