@@ -6,6 +6,8 @@
 
 프로젝트이름은 **부름부름**이고 **사용자는 의뢰인과 피의뢰인으로 간단한 심부름을 하고 보상을 지급받는 O2O서비스**입니다. 빠른 심부름을 위해 지역 기반 서비스로 제작하였습니다.
 
+---
+
 ### 주요기능
 
 어플에서 의뢰인은 **부리미**, 피의뢰인은 **부르미**라고 지칭하겠습니다.
@@ -18,9 +20,13 @@
 - 채팅 기능: 부리미가 약속잡기와 보상지급을하고 심부름에대한 자세한 설명을 해줍니다.
 - 지역 기능: 회원이 사는 지역설정과 범위설정으로 활동지역을 설정합니다.
 
+---
+
 ### 구조도
 
 ![menu.png](docs/menu.png)
+
+---
 
 ### Directory
 
@@ -41,9 +47,13 @@ src
  └── server.js
 ```
 
+---
+
 ### Database
 
 ![database.png](docs/database.png)
+
+---
 
 ### API
 
@@ -55,11 +65,13 @@ src
 
 ```json
 {
-  "suc": boolean, // true면 정상반환, false면 비정상 반환
-  "mes": string,
-  "data": any // default -> "data": null
+  "suc": "boolean", // true면 정상반환, false면 비정상 반환
+  "mes": "string",
+  "data": "any" // default -> "data": null
 }
 ```
+
+---
 
 ### 실행
 
@@ -86,3 +98,5 @@ npm install
 ```
 npm run dev
 ```
+
+---
