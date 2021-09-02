@@ -53,6 +53,7 @@ const ChatService = {
   },
 
   postRoom: async (userId, postId) => {
+    postId = Number(postId);
     const post = await Post.findOne({ where: { id: postId }, attributes: ["id", "sellerId"] });
     if (post.sellerId === userId) throw new CustomError("CREATING_IS_IMPOSSIBLE", 400, "본인이 게시한 심부름은 채팅방 개설이 불가능합니다.");
 
@@ -63,6 +64,7 @@ const ChatService = {
   },
 
   postMessage: async (userId, roomId, content) => {
+    roomId = Number(roomId);
     const message = await ChatMessage.create({ content, senderId: userId, roomId });
     await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
 
@@ -70,6 +72,7 @@ const ChatService = {
   },
 
   postImage: async (userId, roomId, image) => {
+    roomId = Number(roomId);
     const message = await ChatMessage.create({ messageImageURL: image, senderId: userId, roomId });
     await ChatRoom.update({ lastChat: message.content }, { where: { id: roomId } });
 
@@ -77,6 +80,7 @@ const ChatService = {
   },
 
   putStatus: async (userId, roomId, postId, type) => {
+    roomId = Number(roomId);
     const room = await ChatRoom.findOne({ where: { id: roomId } });
     const post = await Post.findOne({ where: { id: postId } });
     const user = await User.findOne({ where: { id: userId } });
