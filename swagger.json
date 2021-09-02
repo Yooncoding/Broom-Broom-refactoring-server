@@ -1,0 +1,48 @@
+{
+  "swagger": "2.0",
+  "host": "",
+  "basePath": "/api",
+  "schemes": ["http", "https"],
+  "info": {
+    "title": "Broom Broom API",
+    "version": "1.0.0",
+    "description": "API Server for Broom Broom Application"
+  },
+  "tags": [
+    {
+      "name": "auth",
+      "description": "회원인증과 관련된 URL입니다."
+    },
+    {
+      "name": "main",
+      "description": "메인페이지 URL입니다."
+    },
+    {
+      "name": "users",
+      "description": "회원정보와 관련된 URL입니다."
+    },
+    {
+      "name": "address",
+      "description": "주소와 관련된 URL입니다."
+    },
+    {
+      "name": "posts",
+      "description": "심부름게시글과 관련된 URL입니다."
+    },
+    {
+      "name": "usage-history",
+      "description": "이용내역과 관련된 URL입니다."
+    },
+    {
+      "name": "chat",
+      "description": "채팅과 관련된 URL입니다."
+    },
+    {
+      "name": "admin",
+      "description": "관리자페이지 URL입니다."
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {}
+}

@@ -9,6 +9,9 @@ if (envFound.error) {
 }
 
 export default {
+  // hostname
+  hostname: process.env.HOSTNAME,
+
   // port
   port: parseInt(process.env.PORT),
 
