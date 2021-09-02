@@ -55,8 +55,8 @@ src
 
 ```json
 {
-  "suc": boolean // true면 정상반환, false면 비정상 반환
-  "mes": string
+  "suc": boolean, // true면 정상반환, false면 비정상 반환
+  "mes": string,
   "data": any // default -> "data": null
 }
 ```
