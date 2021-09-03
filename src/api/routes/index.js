@@ -11,8 +11,8 @@ import chatRouter from "./chat";
 const rootRouter = Router();
 
 export default () => {
-  mainRouter(rootRouter);
   authRouter(rootRouter);
+  mainRouter(rootRouter);
   userRouter(rootRouter);
   addressRouter(rootRouter);
   postRouter(rootRouter);
