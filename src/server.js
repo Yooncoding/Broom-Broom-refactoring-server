@@ -4,6 +4,7 @@ import loader from "./loaders";
 import logger from "./utils/logger";
 import swaggerUI from "swagger-ui-express";
 import swagger from "../swagger.json";
+import runSocket from "./utils/socket";
 
 async function startServer() {
   const app = express();
@@ -15,7 +16,7 @@ async function startServer() {
   // loader
   await loader(app);
 
-  app
+  const server = app
     .listen(config.port, () => {
       logger.info(`
         ##############################################
@@ -27,6 +28,8 @@ async function startServer() {
       logger.error(err);
       process.exit(1);
     });
+
+  runSocket(server);
 }
 
 startServer();
